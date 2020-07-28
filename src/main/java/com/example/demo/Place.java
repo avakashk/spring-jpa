@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +18,7 @@ public class Place {
 	private String name;
 	
 	@ManyToMany
-	private Contact contact;
+	private List<Contact> contact;
 
 	public int getId() {
 		return id;
@@ -34,13 +36,15 @@ public class Place {
 		this.name = name;
 	}
 
-	public Contact getContact() {
+	public List<Contact> getContact() {
 		return contact;
 	}
 
-	public void setContact(Contact contact) {
+	public void setContact(List<Contact> contact) {
 		this.contact = contact;
 	}
+
+
 	
 	
 

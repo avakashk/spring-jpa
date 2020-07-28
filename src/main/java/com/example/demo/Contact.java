@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ public class Contact {
     private String email;
     
     @ManyToMany(mappedBy = "contact") 
-    private Place place;
+    private List<Place>	 place;
 
     public String getEmail() {
 		return email;
@@ -37,7 +39,15 @@ public class Contact {
 
     private String name;
 
-    public Contact() {
+    public List<Place> getPlace() {
+		return place;
+	}
+
+	public void setPlace(List<Place> place) {
+		this.place = place;
+	}
+
+	public Contact() {
 
     }
 

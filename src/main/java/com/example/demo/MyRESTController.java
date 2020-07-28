@@ -17,6 +17,8 @@ public class MyRESTController {
 
 	@Autowired
 	ContactRepository repository;
+	@Autowired
+	PlaceRepository placeRepository;
 
 	@GetMapping("/contacts")
 	public Iterable<Contact> getContacts() {
@@ -31,7 +33,7 @@ public class MyRESTController {
 	@DeleteMapping("/delete/{email}")
 	public ResponseEntity deleteContact(@PathVariable("email") String email) {
 		List<Contact> contactList=repository.findByEmail(email);
-		if(contactList!=null)
+		if(!contactList.isEmpty())
 		{
 			Contact contact=contactList.get(0);
 			repository.delete(contact);
@@ -45,7 +47,9 @@ public class MyRESTController {
 	@GetMapping("/getall/{place}")
 	public ResponseEntity<List<Contact>> getByPlace(@PathVariable("contact") String place)
 	{
-		List<Contact> contacts=repository.getByPlace(place);
+		Place placeFromDb=placeRepository.findByName(place);
+		
+		List<Contact> contacts=placeFromDb.getContact();
 		
 		return new ResponseEntity<List<Contact>>(contacts,HttpStatus.OK);
 	}
@@ -53,7 +57,12 @@ public class MyRESTController {
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<Contact>> search(@PathVariable("keyword") String keyword)
 	{
-		
+		List<Contact> contacts=repository.searchByKeyword(keyword);
+		if(contacts.isEmpty())
+		{
+			return new ResponseEntity<List<Contact>>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Contact>>(contacts,HttpStatus.OK);
 	}
 
 }
